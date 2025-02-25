@@ -1,3 +1,6 @@
+log "安装 pnpm 脚本启动..."
+log "获取用户名..."
+USER_HOME="/home/$(whoami)"
 install_pnpm() {
     mkdir -p "$USER_HOME/.npm-global" "$USER_HOME/bin"
     
