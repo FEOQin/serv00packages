@@ -1,4 +1,5 @@
-'''C++
+```python
+print("Hello, World!")
 1、cd domains/flist.nft6gq111.serv00.net/public_html
 2、git clone https://github.com/FEOQin/FList.git && cd FList
 3、pnpm add -D @rollup/wasm-node@latest
