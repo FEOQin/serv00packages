@@ -1,5 +1,5 @@
-# 在serv00上安装pnpm的一键脚本
-## 一键安装
+# automation在serv00上一键安装脚本
+## 一键安装pnpm
 ```bash
 git clone https://github.com/FEOQin/serv00packages.git && cd serv00packages/automation && bash pnpm.sh
 ```
