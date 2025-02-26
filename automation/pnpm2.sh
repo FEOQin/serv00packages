@@ -13,7 +13,7 @@ warn() {
     echo -e "\033[33m[WARN] $1\033[0m"
 }
 
-# 使用更可靠的路径获取方式
+# 获取路径
 USER_HOME="$HOME"
 PROFILE="$USER_HOME/.bash_profile"
 
