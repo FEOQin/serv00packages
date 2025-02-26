@@ -1,4 +1,4 @@
-# automation在serv00上一键安装脚本
+# 在serv00上一键安装脚本
 
 ## 一键安装pnpm
 ```bash
