@@ -1,4 +1,4 @@
-```python
+```bash
 1、cd domains/创建在serv00的域名/public_html
 2、git clone https://github.com/FEOQin/FList.git && cd FList
 3、pnpm add -D @rollup/wasm-node@latest
