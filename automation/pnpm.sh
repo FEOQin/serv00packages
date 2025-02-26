@@ -13,7 +13,7 @@ warn() {
     echo -e "\033[33m[WARN] $1\033[0m"
 }
 
-# 获取用户目录
+# 使用更可靠的路径获取方式
 USER_HOME="/usr/home/$(whoami)"
 PROFILE="$USER_HOME/.bash_profile"
 
@@ -57,14 +57,8 @@ install_pnpm() {
     log "创建必要目录..."
     mkdir -p "$USER_HOME/.npm-global" "$USER_HOME/bin"
 
-    # 在 "配置 npm 前缀..." 步骤前添加！！！！！！！！
-    log "清理可能冲突的 npm 配置..."
-    rm -f "$USER_HOME/.npmrc"
-    npm config delete prefix --global
-
     log "配置 npm 前缀..."
-    npm config set --global prefix "$USER_HOME/.npm-global"
-    # npm config set prefix "$USER_HOME/.npm-global"
+    npm config set prefix "$USER_HOME/.npm-global"
 
     log "设置 Node.js 软链接..."
     safe_link "/usr/local/bin/node20" "$USER_HOME/bin/node"
