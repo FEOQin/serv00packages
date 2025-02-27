@@ -7,7 +7,7 @@ cd domains/这里创建.域名绑定端口.com/public_html
 git clone https://github.com/ArtalkJS/Artalk.git
 ```
 ## 2、编译项目
-不想自行构建的可以直接下载 ~![Release下载地址](https://github.com/FEOQin/serv00packages/releases/download/artalk%E8%AF%84%E8%AE%BA%E6%8F%92%E4%BB%B6/artalk)
+不想自行构建的可以直接下载 ~[Release下载地址](https://github.com/FEOQin/serv00packages/releases/download/artalk%E8%AF%84%E8%AE%BA%E6%8F%92%E4%BB%B6/artalk)
 ```
 #进入项目文件夹
 cd Artalk
