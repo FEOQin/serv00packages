@@ -15,6 +15,6 @@ cd Artalk
 ##这里构建项目时间较长，不要使用webssh会断线，使用正常SSH软件
 go build
 ```
-
 构建完成后在serv00的File Manager中可以看到一个名叫 artalk 的文件
+
 ![artalk](https://b2.qbobo.eu.org/2025/02/22/631782.png)
