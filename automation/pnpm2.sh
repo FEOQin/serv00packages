@@ -51,7 +51,7 @@ safe_link() {
     ln -fs "$src" "$dest" && log "创建软链接: $dest → $src"
 }
 
-# 智能 npm 前缀配置检查
+# npm 前缀配置检查
 check_npm_prefix() {
     local target_prefix="$USER_HOME/.npm-global"
     local current_prefix
