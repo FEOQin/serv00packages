@@ -1,4 +1,9 @@
-修改```package.json```
+```
+1、cd domains/创建在serv00的域名/public_html
+2、git clone https://github.com/FEOQin/FList.git && cd FList
+3、pnpm add @rollup/wasm-node
+4、pnpm approve-builds
+5、修改```package.json```
 ```
 {
   "name": "flist",
@@ -40,4 +45,10 @@
     "rollup": "npm:@rollup/wasm-node@4.34.8"
   }
 }
+```
+pnpm install --force
+6、pnpm run build
+7、cp -r .vuepress/dist/* ~/domains/创建在serv00的域名/public_html/
+8、cd ~/domains/创建在serv00的域名/ 
+9、chmod -R 755 ~/public_html
 ```
