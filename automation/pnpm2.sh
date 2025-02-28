@@ -14,7 +14,7 @@ warn() {
 }
 
 # 使用可靠的路径获取方式
-USER_HOME="/usr/home/$(whoami)"
+USER_HOME="/home/$(whoami)"
 PROFILE="$USER_HOME/.bash_profile"
 
 # 环境变量重载函数
