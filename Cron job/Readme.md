@@ -1,5 +1,3 @@
-![image](https://github.com/user-attachments/assets/ac291fe8-06c2-4643-b54a-6b03f43e54a2)
-
 <details>
 <summary>📂 serv00部署教程</summary>
 
@@ -30,4 +28,6 @@
 
 - 添加新任务会直接添加到serv00的**cron job**和**挂起任务列表**
 
+## 项目展示图
 </details>
+![image](https://github.com/user-attachments/assets/ac291fe8-06c2-4643-b54a-6b03f43e54a2){ width: 500px; }
