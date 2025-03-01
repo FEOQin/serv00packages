@@ -1,0 +1,41 @@
+## 原项目指引：https://github.com/ArtalkJS/Artalk
+
+# serv00部署
+
+<details>
+<summary>Go语言安装步骤（折叠部分）</summary>
+
+```bash
+# 创建安装目录
+mkdir -p ~/local/soft && cd ~/local/soft
+
+# 下载编译好的 go1.22.7 的程序包
+wget https://dl.google.com/go/go1.22.7.freebsd-amd64.tar.gz
+
+# 解压下载的程序包
+tar -xzvf go1.22.7.freebsd-amd64.tar.gz
+
+# 删除压缩文件以节省空间
+rm go1.22.7.freebsd-amd64.tar.gz
+
+# 将Go的bin目录添加到PATH环境变量中
+echo 'export PATH=~/local/soft/go/bin:$PATH' >> ~/.profile
+
+# 使.profile的修改立即生效
+source ~/.profile
+1、拉取项目
+bash
+# 进入创建域名的 `public_html` 文件下
+cd domains/这里创建.域名绑定端口.com/public_html
+
+# 拉取artalk官方最新项目
+git clone https://github.com/ArtalkJS/Artalk.git
+2、编译项目
+不想自行构建的可以直接下载 ~Release下载地址-artalk
+bash
+# 进入项目文件夹
+cd Artalk
+# 编译项目
+## 这里构建项目时间较长，不要使用webssh会断线，使用正常SSH软件
+go build
+构建完成后在serv00的File Manager中可以看到一个名叫 artalk 的文件
