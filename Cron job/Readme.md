@@ -21,7 +21,8 @@
 1、显示所有添加过的cron job配置方便日后操作，可以单独操作 移除 不需要的cron
 2、挂起任务列表不意味着 cron job 被删除后会自动添加，需要点击 立即同步到系统
 3、立即同步到系统，会立即同步添加serv00还未配置的cron job
-<img src="https://github.com/user-attachments/assets/a6005976-1bd1-4d51-9ed3-64798559a246" width="600" alt="image">
+
+<img src="https://github.com/user-attachments/assets/a6005976-1bd1-4d51-9ed3-64798559a246" width="800" alt="image">
 
 - **挂起任务列表**中的配置会存放在 `cron_job.txt` 中，第一次使用会自动创建，需要给755权限
 ![image](https://github.com/user-attachments/assets/80719730-a828-45ab-9632-db8313d13a9a)
