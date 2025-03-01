@@ -16,7 +16,8 @@
 
 1、显示当前serv00存在的cron job配置，可以单独操作 删除
 2、刷新列表按钮可以手动刷新当前serv00的cron job配置
-![image](https://github.com/user-attachments/assets/183ec469-b4ac-40e6-953d-a7ad9a229790)
+
+<img src="https://github.com/user-attachments/assets/183ec469-b4ac-40e6-953d-a7ad9a229790" width="700" alt="image">
 
 - **挂起任务列表：**
 
