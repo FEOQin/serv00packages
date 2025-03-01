@@ -30,4 +30,5 @@
 
 ## 项目展示图
 </details>
-![image](https://github.com/user-attachments/assets/ac291fe8-06c2-4643-b54a-6b03f43e54a2)
+
+![image](https://github.com/user-attachments/assets/ac291fe8-06c2-4643-b54a-6b03f43e54a2){ width: 500px; }
