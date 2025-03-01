@@ -31,4 +31,4 @@
 ## 项目展示图
 </details>
 
-<img src="https://github.com/user-attachments/assets/ac291fe8-06c2-4643-b54a-6b03f43e54a2" width="600" alt="image">
+<img src="https://github.com/user-attachments/assets/ac291fe8-06c2-4643-b54a-6b03f43e54a2" width="700" alt="image">
