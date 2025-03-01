@@ -24,7 +24,7 @@
 ![image](https://github.com/user-attachments/assets/a6005976-1bd1-4d51-9ed3-64798559a246)
 
 - **挂起任务列表**中的配置会存放在 `cron_job.txt` 中，第一次使用会自动创建，需要给755权限
-![image](https://github.com/user-attachments/assets/427a5854-5feb-443f-ae85-b41ed54a6291)
+<img src="https://github.com/user-attachments/assets/427a5854-5feb-443f-ae85-b41ed54a6291" width="700" alt="image">
 
 - 添加新任务会直接添加到serv00的**cron job**和**挂起任务列表**
 
