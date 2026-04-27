@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>XHTTP · Reality 配置生成器 Pro（ECH支持）</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+        }
+        body {
+            background: #f4f6fa;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            padding: 24px 16px 40px;
+            color: #1a1e2b;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin-bottom: 6px;
+            color: #0b1e42;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .badge {
+            background: #e6edfc;
+            color: #1d4ed8;
+            font-size: 0.8rem;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-weight: 500;
+        }
+        .subhead {
+            color: #4b587c;
+            margin-bottom: 32px;
+            font-size: 1rem;
+            border-left: 4px solid #3b82f6;
+            padding-left: 18px;
+        }
+        .config-panel {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+        @media (max-width: 700px) {
+            .config-panel {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 22px 24px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.02), 0 2px 6px rgba(0,0,0,0.03);
+            border: 1px solid #eef2f8;
+        }
+        .card-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 22px;
+            color: #121826;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .form-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .field label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #2c3b5a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .req::after {
+            content: "*";
+            color: #e03a3a;
+            margin-left: 4px;
+        }
+        .field input {
+            padding: 11px 14px;
+            border: 1.5px solid #dfe6f0;
+            border-radius: 16px;
+            font-size: 0.9rem;
+            background: #fbfdff;
+            transition: 0.15s;
+            font-family: 'SF Mono', 'Menlo', monospace;
+        }
+        .field input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
+            outline: none;
+            background: white;
+        }
+
+        .ip-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .ip-type-group {
+            display: flex;
+            gap: 12px;
+            background: #f1f5f9;
+            padding: 4px 8px;
+            border-radius: 40px;
+        }
+        .ip-type-group label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        .ip-input-wrap {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .inline-hint {
+            font-size: 0.75rem;
+            color: #6c7a94;
+            margin-top: 2px;
+        }
+
+        .btn {
+            background: white;
+            border: 1px solid #cfdde9;
+            padding: 11px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #1e293b;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            transition: all 0.15s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
+        .btn-primary {
+            background: #121826;
+            border-color: #121826;
+            color: white;
+            box-shadow: 0 10px 18px -8px rgba(18,24,38,0.2);
+        }
+        .btn-primary:hover { background: #1f2937; }
+        .btn-outline {
+            background: white;
+            border-color: #cfdde9;
+            color: #1e293b;
+        }
+        .btn-outline:hover { background: #f8fafd; }
+
+        .node-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            margin-top: 10px;
+        }
+        .node-card {
+            position: relative;
+            background: #ffffff;
+            border-radius: 22px;
+            padding: 20px 22px;
+            border: 1px solid #e9eef4;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+            overflow: hidden;
+        }
+        .ip-version-tag {
+            position: absolute;
+            top: 12px;
+            right: -28px;
+            background: #1e293b;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 36px;
+            transform: rotate(15deg);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .node-top {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 16px;
+            padding-right: 50px;
+        }
+        .node-label {
+            background: #e6edfc;
+            color: #1d4ed8;
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        .alias-edit {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1 1 auto;
+        }
+        .alias-edit input {
+            padding: 8px 14px;
+            border: 1.5px solid #dde3ed;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            background: white;
+            width: 350px;
+            max-width: 100%;
+        }
+        .copy-node {
+            background: white;
+            border: 1px solid #cdd9e6;
+            padding: 8px 22px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.1s;
+            white-space: nowrap;
+            margin-left: auto;
+        }
+        .copy-node:hover { background: #eef3fc; }
+        .link-preview {
+            background: #fafcff;
+            padding: 14px 18px;
+            border-radius: 18px;
+            font-family: 'SF Mono', 'Menlo', monospace;
+            font-size: 0.8rem;
+            word-break: break-all;
+            line-height: 1.5;
+            border: 1px solid #e2eaf2;
+            color: #0f1a2e;
+            max-height: 130px;
+            overflow-y: auto;
+        }
+        .footer-note {
+            margin-top: 36px;
+            color: #6a7c94;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        .card-hint {
+            font-size: 0.8rem;
+            color: #4b6589;
+            margin-top: 8px;
+            text-align: center;
+        }
+        .ech-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .ech-input-wrap {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🛡️ XHTTP · Reality <span class="badge">IPv4 / IPv6 自适应</span></h1>
+    <div class="subhead">全参数生成 · 五种分离模式 · 自定义别名 · ECH 支持</div>
+
+    <div class="config-panel">
+        <!-- 左侧：核心凭证 -->
+        <div class="card">
+            <div class="card-title">🔐 凭证</div>
+            <div class="form-grid">
+                <div class="field"><label class="req">UUID1 (Vision)</label><input type="text" id="uuid1" placeholder="例如: be1c522b-3552-45f4-a92c-..."></div>
+                <div class="field"><label class="req">UUID2 (XHTTP)</label><input type="text" id="uuid2" placeholder="例如: 30497139-782a-49b1-b5b3-..."></div>
+                <div class="field"><label class="req">PrivateKey</label><input type="text" id="privateKey" placeholder="例如: YPQlUwp94jz1nRZ0ExuSME7J7CbY..."></div>
+                <div class="field"><label class="req">PublicKey</label><input type="text" id="publicKey" placeholder="例如: yOFdRhvtFnD8qnS4FXyYq8MFWf..."></div>
+                <div class="field"><label>ShortID</label><input type="text" id="shortId" placeholder="例如: 350b6b88"></div>
+                <div class="field"><label class="req">Decryption</label><input type="text" id="decryption" placeholder="mlkem768x25519plus.native.600s...."></div>
+                <div class="field"><label class="req">Encryption</label><input type="text" id="encryption" placeholder="mlkem768x25519plus.native.0rtt...."></div>
+            </div>
+        </div>
+
+        <!-- 右侧：网络参数与操作按钮 -->
+        <div class="card">
+            <div class="card-title">🌐 网络参数</div>
+            <div class="form-grid">
+                <div class="field">
+                    <label class="req">服务器地址</label>
+                    <div class="ip-row">
+                        <div class="ip-type-group">
+                            <label><input type="radio" name="ipType" value="ipv4" checked> IPv4</label>
+                            <label><input type="radio" name="ipType" value="ipv6"> IPv6</label>
+                        </div>
+                        <div class="ip-input-wrap">
+                            <input type="text" id="ipv4Input" placeholder="123.45.67.89" value="">
+                            <input type="text" id="ipv6Input" placeholder="2001:db8::1" style="display:none;">
+                        </div>
+                    </div>
+                    <div class="inline-hint">IPv6 请勿含方括号，自动格式化</div>
+                </div>
+                <div class="field"><label>伪装域名 (Reality SNI)</label><input type="text" id="realitySni" placeholder="例如: www.u-tokyo.ac.jp"></div>
+                <div class="field"><label>CDN 域名</label><input type="text" id="cdnDomain" placeholder="例如: cdn.yourdomain.com"></div>
+                <div class="field"><label class="req">XHTTP 路径</label><input type="text" id="xhttpPath" placeholder="/9ead2895"></div>
+                <!-- ECH 配置 -->
+                <div class="field">
+                    <div class="ech-row">
+                        <label style="white-space: nowrap;">
+                            <input type="checkbox" id="echToggle"> 启用 ECH
+                        </label>
+                        <div class="ech-input-wrap" id="echInputWrap" style="display:none;">
+                            <input type="text" id="echString" placeholder="cloudflare-ech.com+https://223.5.5.5/dns-query" value="cloudflare-ech.com+https://223.5.5.5/dns-query">
+                        </div>
+                    </div>
+                    <div class="inline-hint">用于 TLS 节点增加 ECH 混淆，默认使用 Cloudflare 公共 ECH</div>
+                </div>
+                <!-- 生成与复制全部按钮上下排列 -->
+                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
+                    <button class="btn btn-primary" id="generateBtn">✨ 生成节点</button>
+                    <button class="btn btn-outline" id="copyAllBtn">📋 复制全部（当前别名）</button>
+                </div>
+                <div class="card-hint">点击单条右侧「复制」获取对应链接</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 节点结果区域 -->
+    <div id="nodeContainer" class="node-grid"></div>
+    <div class="footer-note">配置基于 Nginx stream 分流 + Xray 8444/8001 · 别名可自由编辑</div>
+</div>
+
+<script>
+    (function(){
+        const ipv4Radio = document.querySelector('input[value="ipv4"]');
+        const ipv6Radio = document.querySelector('input[value="ipv6"]');
+        const ipv4Input = document.getElementById('ipv4Input');
+        const ipv6Input = document.getElementById('ipv6Input');
+        const uuid1 = document.getElementById('uuid1');
+        const uuid2 = document.getElementById('uuid2');
+        const privateKey = document.getElementById('privateKey');
+        const publicKey = document.getElementById('publicKey');
+        const shortId = document.getElementById('shortId');
+        const decryption = document.getElementById('decryption');
+        const encryption = document.getElementById('encryption');
+        const realitySni = document.getElementById('realitySni');
+        const cdnDomain = document.getElementById('cdnDomain');
+        const xhttpPath = document.getElementById('xhttpPath');
+        const echToggle = document.getElementById('echToggle');
+        const echString = document.getElementById('echString');
+        const echInputWrap = document.getElementById('echInputWrap');
+        const container = document.getElementById('nodeContainer');
+        const generateBtn = document.getElementById('generateBtn');
+        const copyAllBtn = document.getElementById('copyAllBtn');
+
+        // IP 切换显示
+        function updateIpVisibility() {
+            const isIpv6 = ipv6Radio.checked;
+            ipv4Input.style.display = isIpv6 ? 'none' : 'block';
+            ipv6Input.style.display = isIpv6 ? 'block' : 'none';
+        }
+        ipv4Radio.addEventListener('change', updateIpVisibility);
+        ipv6Radio.addEventListener('change', updateIpVisibility);
+        updateIpVisibility();
+
+        // ECH 切换显示
+        echToggle.addEventListener('change', () => {
+            echInputWrap.style.display = echToggle.checked ? 'block' : 'none';
+        });
+
+        function getServerAddress() {
+            const isIpv6 = ipv6Radio.checked;
+            let addr = isIpv6 ? ipv6Input.value.trim() : ipv4Input.value.trim();
+            if (isIpv6 && addr && !addr.startsWith('[')) addr = '[' + addr + ']';
+            return addr;
+        }
+
+        function getRawAddress() {
+            return ipv6Radio.checked ? ipv6Input.value.trim() : ipv4Input.value.trim();
+        }
+
+        function getCurrentIpVersion() {
+            return ipv6Radio.checked ? 'IPv6' : 'IPv4';
+        }
+
+        function getFormData() {
+            const echEnabled = echToggle.checked;
+            const echValue = echEnabled ? echString.value.trim() : '';
+            return {
+                uuid1: uuid1.value.trim(),
+                uuid2: uuid2.value.trim(),
+                privateKey: privateKey.value.trim(),
+                publicKey: publicKey.value.trim(),
+                shortId: shortId.value.trim() || '350b6b88',
+                decryption: decryption.value.trim(),
+                encryption: encryption.value.trim(),
+                serverAddr: getServerAddress(),
+                rawAddr: getRawAddress(),
+                realitySni: realitySni.value.trim() || 'www.u-tokyo.ac.jp',
+                cdnDomain: cdnDomain.value.trim() || 'cdn.yourdomain.com',
+                path: xhttpPath.value.trim() || '/9ead2895',
+                ipVersion: getCurrentIpVersion(),
+                echEnabled,
+                echValue
+            };
+        }
+
+        function validate(data) {
+            if (!data.uuid1 || !data.uuid2 || !data.privateKey || !data.publicKey || !data.decryption || !data.encryption || !data.serverAddr || !data.path) {
+                alert('请填写所有带 * 的必填字段');
+                return false;
+            }
+            return true;
+        }
+
+        // 根据 ECH 构建 TLS 链接中需要的 ech 参数片段
+        function getEchUrlParam(echValue) {
+            if (!echValue) return '';
+            return `&ech=${encodeURIComponent(echValue)}`;
+        }
+
+        // 生成原始链接数组，顺序：1,2,3,4,5
+        function buildLinks(data) {
+            const pathEnc = encodeURIComponent(data.path);
+            const baseReality = `security=reality&sni=${encodeURIComponent(data.realitySni)}&fp=chrome&pbk=${encodeURIComponent(data.publicKey)}&sid=${encodeURIComponent(data.shortId)}`;
+            let baseTls = `security=tls&sni=${encodeURIComponent(data.cdnDomain)}&fp=chrome&alpn=h2&insecure=0&allowInsecure=0&type=xhttp&host=${encodeURIComponent(data.cdnDomain)}&path=${pathEnc}&mode=auto`;
+            if (data.echEnabled && data.echValue) {
+                baseTls += getEchUrlParam(data.echValue);
+            }
+
+            // 模式1：Reality+Vision 直连
+            const l1 = `vless://${data.uuid1}@${data.serverAddr}:443?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${encodeURIComponent(data.realitySni)}&fp=chrome&pbk=${encodeURIComponent(data.publicKey)}&sid=${encodeURIComponent(data.shortId)}&type=tcp&headerType=none`;
+
+            // 模式2：XHTTP+Reality 上下行不分离
+            const l2 = `vless://${data.uuid2}@${data.serverAddr}:443?encryption=${encodeURIComponent(data.encryption)}&${baseReality}&type=xhttp&path=${pathEnc}&mode=auto`;
+
+            // 模式3：XHTTP+TLS 双向 CDN (主链接已含TLS，可带ech参数)
+            const l3 = `vless://${data.uuid2}@${data.cdnDomain}:443?encryption=${encodeURIComponent(data.encryption)}&${baseTls}`;
+
+            // 模式4：上行 TLS+CDN · 下行 Reality (主链接TLS带ech，下行Reality不需要ech)
+            const extraRealityObj = {
+                address: data.rawAddr, port: 443, network: "xhttp", security: "reality", encryption: data.encryption,
+                realitySettings: { show: false, serverName: data.realitySni, fingerprint: "chrome", shortId: data.shortId, publicKey: data.publicKey },
+                xhttpSettings: { host: "", path: data.path, mode: "auto" }
+            };
+            // 下行 Reality 不需要 ECH
+            const extraReality = encodeURIComponent(JSON.stringify(extraRealityObj));
+            const l4 = `vless://${data.uuid2}@${data.cdnDomain}:443?encryption=${encodeURIComponent(data.encryption)}&${baseTls}&extra=${extraReality}`;
+
+            // 模式5：上行 Reality · 下行 TLS+CDN (主链接Reality无ech，下行TLS加入echConfigList)
+            const extraTlsObj = {
+                address: data.cdnDomain, port: 443, network: "xhttp", security: "tls", encryption: data.encryption,
+                tlsSettings: { serverName: data.cdnDomain, allowInsecure: false, alpn: ["h2"], fingerprint: "chrome" },
+                xhttpSettings: { host: data.cdnDomain, path: data.path, mode: "auto" }
+            };
+            if (data.echEnabled && data.echValue) {
+                extraTlsObj.tlsSettings.echConfigList = data.echValue;
+            }
+            const extraTls = encodeURIComponent(JSON.stringify(extraTlsObj));
+            const l5 = `vless://${data.uuid2}@${data.serverAddr}:443?encryption=${encodeURIComponent(data.encryption)}&${baseReality}&type=xhttp&path=${pathEnc}&mode=auto&extra=${extraTls}`;
+
+            return [l1, l2, l3, l4, l5];
+        }
+
+        // 别名数组
+        const defaultAliases = [
+            'Reality+Vision 直连',
+            'XHTTP+Reality 上下行不分离',
+            'XHTTP+TLS 双向CDN',
+            '上行 XHTTP+TLS+CDN | 下行 XHTTP+Reality',
+            '上行 XHTTP+Reality | 下行 XHTTP+TLS+CDN'
+        ];
+
+        function renderNodes() {
+            const data = getFormData();
+            if (!validate(data)) return;
+            const links = buildLinks(data);
+            const ipVersion = data.ipVersion;
+            let html = '';
+            for (let i = 0; i < 5; i++) {
+                html += `
+                    <div class="node-card" data-index="${i}">
+                        <div class="ip-version-tag">${ipVersion}</div>
+                        <div class="node-top">
+                            <span class="node-label">模式 ${i+1}</span>
+                            <div class="alias-edit">
+                                <input type="text" class="alias-input" value="${defaultAliases[i]}" placeholder="别名">
+                                <button class="copy-node" data-base="${links[i].replace(/"/g, '&quot;')}">📋 复制</button>
+                            </div>
+                        </div>
+                        <div class="link-preview link-text" data-base="${links[i].replace(/"/g, '&quot;')}"></div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+
+            document.querySelectorAll('.node-card').forEach((card, idx) => {
+                const aliasInput = card.querySelector('.alias-input');
+                const linkDiv = card.querySelector('.link-text');
+                const base = links[idx];
+                const update = () => {
+                    const alias = aliasInput.value.trim() || defaultAliases[idx];
+                    linkDiv.textContent = base + '#' + encodeURIComponent(alias);
+                };
+                aliasInput.addEventListener('input', update);
+                update();
+            });
+
+            document.querySelectorAll('.copy-node').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const card = btn.closest('.node-card');
+                    const aliasInput = card.querySelector('.alias-input');
+                    const alias = aliasInput.value.trim() || '节点';
+                    const base = btn.getAttribute('data-base');
+                    const final = base + '#' + encodeURIComponent(alias);
+                    try {
+                        await navigator.clipboard.writeText(final);
+                        const original = btn.textContent;
+                        btn.textContent = '✅ 已复制';
+                        setTimeout(() => btn.textContent = original, 1500);
+                    } catch (err) {
+                        alert('复制失败');
+                    }
+                });
+            });
+        }
+
+        async function copyAll() {
+            const data = getFormData();
+            if (!validate(data)) return;
+            const links = buildLinks(data);
+            const cards = document.querySelectorAll('.node-card');
+            let all = '';
+            cards.forEach((card, i) => {
+                const aliasInput = card.querySelector('.alias-input');
+                const alias = aliasInput.value.trim() || defaultAliases[i];
+                all += links[i] + '#' + encodeURIComponent(alias) + '\n\n';
+            });
+            try {
+                await navigator.clipboard.writeText(all.trim());
+                alert('✅ 全部链接已复制');
+            } catch { alert('复制失败'); }
+        }
+
+        generateBtn.addEventListener('click', renderNodes);
+        copyAllBtn.addEventListener('click', copyAll);
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (ipv4Input.value.trim() || ipv6Input.value.trim()) {
+                renderNodes();
+            } else {
+                container.innerHTML = '<div style="padding:20px;text-align:center">⬆️ 请输入服务器地址并生成</div>';
+            }
+        });
+    })();
+</script>
+</body>
+</html>
